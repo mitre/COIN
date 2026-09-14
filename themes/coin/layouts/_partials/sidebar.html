@@ -1,0 +1,33 @@
+<nav class="sidebar" aria-label="Documentation">
+  <a class="sidebar-title" href="{{ site.Home.RelPermalink }}">{{ site.Title }}</a>
+  <a href="{{ site.Home.RelPermalink }}"{{ if eq site.Home . }} aria-current="page"{{ end }}>{{ site.Home.LinkTitle }}</a>
+  {{- $pages := site.Home.Pages.ByWeight }}
+  {{- $categories := slice }}
+  {{- range $pages }}
+    {{- with .Params.category }}
+      {{- $categories = $categories | append . }}
+    {{- end }}
+  {{- end }}
+  {{- range $categories | uniq }}
+    {{- $id := printf "sidebar-%s" (anchorize .) }}
+    <div class="sidebar-group" role="group" aria-labelledby="{{ $id }}">
+      <p class="sidebar-label" id="{{ $id }}">{{ . }}</p>
+      <ul>
+        {{- range where $pages "Params.category" . }}
+          <li>
+            <a href="{{ .RelPermalink }}"{{ if eq . $ }} aria-current="page"{{ end }}>{{ .LinkTitle }}</a>
+            {{- if .IsSection }}
+              <ul>
+                {{- range .Pages.ByWeight }}
+                  <li>
+                    <a href="{{ .RelPermalink }}"{{ if eq . $ }} aria-current="page"{{ end }}>{{ .LinkTitle }}</a>
+                  </li>
+                {{- end }}
+              </ul>
+            {{- end }}
+          </li>
+        {{- end }}
+      </ul>
+    </div>
+  {{- end }}
+</nav>

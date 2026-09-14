@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mitre.github.io/COIN/capability/capability.schema.json",
+  "title": "COIN Capability",
+  "description": "Preliminary representation of a Profile-defined Capability with embedded MCP tool definitions.",
+  "type": "object",
+  "required": ["id", "type", "description", "scope", "tools"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "type": {
+      "type": "string",
+      "enum": ["data-access"]
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tools": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/mcpTool"
+      }
+    }
+  },
+  "$defs": {
+    "mcpTool": {
+      "description": "Basic MCP tool structure. Full tool and embedded schema validation follows the MCP version required by the Profile.",
+      "type": "object",
+      "required": ["name", "inputSchema"],
+      "additionalProperties": true,
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string"
+        },
+        "inputSchema": {
+          "type": "object",
+          "required": ["type"],
+          "properties": {
+            "type": {
+              "const": "object"
+            }
+          }
+        },
+        "outputSchema": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

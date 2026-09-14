@@ -1,0 +1,131 @@
+{
+  "id": "hypothetical-home-monitor-training",
+  "metadata": {
+    "version": "draft",
+    "title": "Hypothetical quality measure: home monitor training",
+    "source": "Original illustrative scenario created for the COIN proposal. Not a validated clinical measure. The enrollment period, time windows, device models, codes, and code-system URI are invented for this example."
+  },
+  "criteria": [
+    {
+      "id": "program-enrollment",
+      "statement": "The program episode has a documented enrollment date from April 1 through June 30, 2027, inclusive. A program episode means one enrollment of one patient in the hypothetical home blood-pressure monitoring program. All criteria concern this same episode; separate enrollments are assessed separately."
+    },
+    {
+      "id": "monitor-received",
+      "statement": "A delivery record documents that the patient received a supported monitor for this program episode on the enrollment date or within the next 10 calendar days. A supported monitor is either fictional model A or fictional model B. The delivered monitor means the particular device identified by this record; all training evidence concerns this same device.",
+      "bindings": [
+        {
+          "term": "supported monitor",
+          "codes": [
+            {
+              "system": "https://example.org/coin/synthetic/home-monitor-training/codes",
+              "code": "MONITOR-A",
+              "version": "1",
+              "display": "Fictional monitor model A"
+            },
+            {
+              "system": "https://example.org/coin/synthetic/home-monitor-training/codes",
+              "code": "MONITOR-B",
+              "version": "1",
+              "display": "Fictional monitor model B"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "observed-demonstration",
+      "statement": "A staff record documents an observed demonstration in which the patient positioned the cuff and retrieved a saved sample reading using the delivered monitor in one session. The session occurred within the training window for this program episode. The training window runs from the monitor's receipt date through 14 calendar days later, inclusive.",
+      "bindings": [
+        {
+          "term": "observed demonstration",
+          "codes": [
+            {
+              "system": "https://example.org/coin/synthetic/home-monitor-training/codes",
+              "code": "OBSERVED-DEMONSTRATION",
+              "version": "1",
+              "display": "Fictional observed device demonstration"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "coaching-call",
+      "statement": "A staff record documents a completed coaching call in which the patient was guided through retrieving a saved sample reading from the delivered monitor for this program episode. The call ended within the training window, which runs from the monitor's receipt date through 14 calendar days later, inclusive. All call-related evidence for the remote pathway must refer to this same call.",
+      "bindings": [
+        {
+          "term": "coaching call",
+          "codes": [
+            {
+              "system": "https://example.org/coin/synthetic/home-monitor-training/codes",
+              "code": "COACHING-CALL",
+              "version": "1",
+              "display": "Fictional device coaching call"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "practice-upload",
+      "statement": "A portal record documents a practice upload containing a saved sample reading from the delivered monitor for this program episode. The upload identifies the coaching call it follows and was received after that call ended. It was received within the training window, which runs from the monitor's receipt date through 14 calendar days later, inclusive. The upload and the call must concern the same patient, program episode, and delivered monitor.",
+      "bindings": [
+        {
+          "term": "practice upload",
+          "codes": [
+            {
+              "system": "https://example.org/coin/synthetic/home-monitor-training/codes",
+              "code": "PRACTICE-UPLOAD",
+              "version": "1",
+              "display": "Fictional practice reading upload"
+            }
+          ]
+        },
+        {
+          "term": "coaching call",
+          "codes": [
+            {
+              "system": "https://example.org/coin/synthetic/home-monitor-training/codes",
+              "code": "COACHING-CALL",
+              "version": "1",
+              "display": "Fictional device coaching call"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "expressions": [
+    {
+      "id": "remote-training",
+      "description": "The remote pathway requires a coaching call and a subsequent practice upload linked to that same call and device.",
+      "operator": "all",
+      "operands": ["coaching-call", "practice-upload"]
+    },
+    {
+      "id": "training-confirmed",
+      "description": "Either an observed demonstration or the complete remote pathway establishes training confirmation in this hypothetical example.",
+      "operator": "any",
+      "operands": ["observed-demonstration", "remote-training"]
+    },
+    {
+      "id": "initial-population",
+      "description": "Program episodes with a documented enrollment in the illustrative reporting period.",
+      "operator": "all",
+      "operands": ["program-enrollment"]
+    },
+    {
+      "id": "denominator",
+      "description": "Episodes in the initial population with timely documented receipt of a supported monitor. Count each episode once.",
+      "operator": "all",
+      "operands": ["initial-population", "monitor-received"]
+    },
+    {
+      "id": "numerator",
+      "description": "Denominator episodes with confirmed training. Count each episode once even if both training pathways are satisfied.",
+      "operator": "all",
+      "operands": ["denominator", "training-confirmed"]
+    }
+  ]
+}
