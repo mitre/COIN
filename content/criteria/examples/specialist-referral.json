@@ -1,0 +1,84 @@
+{
+  "id": "hypothetical-sleep-clinic-referral",
+  "metadata": {
+    "version": "draft",
+    "title": "Hypothetical specialist referral: sleep clinic",
+    "source": "Original hypothetical referral policy created for the COIN proposal. The service scope, information requirements, and terminology identifiers are invented for teaching. This is not a validated clinical referral policy."
+  },
+  "criteria": [
+    {
+      "id": "adult-at-referral",
+      "statement": "The patient is at least 18 years old on the referral date."
+    },
+    {
+      "id": "supported-referral-reason",
+      "statement": "The referring clinician requests assessment of a supported sleep concern, meaning daytime sleepiness or difficulty maintaining sleep.",
+      "bindings": [
+        {
+          "term": "supported sleep concern",
+          "codes": [
+            {
+              "system": "https://example.org/coin/synthetic/sleep-referral/codes",
+              "code": "DAYTIME-SLEEPINESS",
+              "version": "1",
+              "display": "Fictional daytime sleepiness referral concept"
+            },
+            {
+              "system": "https://example.org/coin/synthetic/sleep-referral/codes",
+              "code": "SLEEP-MAINTENANCE-DIFFICULTY",
+              "version": "1",
+              "display": "Fictional sleep maintenance referral concept"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "symptom-history-provided",
+      "statement": "The referral package contains a history of the symptoms prompting referral, including when they began, how often they occur, and how they affect daily activities."
+    },
+    {
+      "id": "medication-information-provided",
+      "statement": "The referral package states which medicines the patient takes as of the referral date, including an explicit statement if the patient takes none. An empty or omitted medication list alone does not establish this criterion."
+    },
+    {
+      "id": "latest-study-report-provided",
+      "statement": "The referral package includes the interpretation report for the patient's most recent completed sleep study on or before the referral date. The report identifies the patient, study date, interpreting clinician, and findings, all for that same study. A sleep study means a diagnostic sleep recording performed at home or in a sleep laboratory; a questionnaire, order, or appointment alone does not qualify. If the latest completed study is known but its report is absent, this criterion is not satisfied. If a report is supplied but the available evidence cannot establish whether it is for the most recent completed study, this criterion remains unresolved."
+    },
+    {
+      "id": "no-prior-study-confirmed",
+      "statement": "The referral package includes an explicit history from the patient or referring clinician confirming that the patient had completed no sleep study on or before the referral date. A sleep study means a diagnostic sleep recording performed at home or in a sleep laboratory; a questionnaire, order, or appointment alone does not qualify. The confirmation must be consistent with available evidence. A missing report or an unknown study history does not establish this criterion."
+    }
+  ],
+  "expressions": [
+    {
+      "id": "within-service-scope",
+      "description": "The referral meets the hypothetical service's age and referral-reason requirements.",
+      "operator": "all",
+      "operands": ["adult-at-referral", "supported-referral-reason"]
+    },
+    {
+      "id": "study-information-complete",
+      "description": "The package supplies either the latest completed study's report or confirmation that no study was completed. An unavailable report from a completed study cannot satisfy the no-study alternative.",
+      "operator": "any",
+      "operands": ["latest-study-report-provided", "no-prior-study-confirmed"]
+    },
+    {
+      "id": "information-complete",
+      "description": "The requested symptom, medication, and study information is present. This expression is assessed separately from service scope.",
+      "operator": "all",
+      "operands": [
+        "symptom-history-provided",
+        "medication-information-provided",
+        "study-information-complete"
+      ]
+    },
+    {
+      "id": "ready-for-review",
+      "description": "The stated scope and information requirements are met for specialist review. The receiving clinical team assesses the referral's appropriateness and urgency.",
+      "operator": "all",
+      "operands": ["within-service-scope", "information-complete"]
+    }
+  ],
+  "result": "ready-for-review"
+}

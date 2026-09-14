@@ -1,0 +1,9 @@
+<nav class="sidebar" aria-label="Documentation">
+  <ul>
+    {{- range slice site.Home | append site.RegularPages.ByWeight }}
+      <li>
+        <a href="{{ .RelPermalink }}"{{ if eq . $ }} aria-current="page"{{ end }}>{{ .LinkTitle }}</a>
+      </li>
+    {{- end }}
+  </ul>
+</nav>

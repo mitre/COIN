@@ -1,0 +1,33 @@
+{
+  "id": "bariatric-surgery",
+  "metadata": {
+    "version": "draft",
+    "title": "Laparoscopic Roux-en-Y gastric bypass: Medicare NCD criteria",
+    "source": "CMS NCD 100.1, version 5, section B"
+  },
+  "criteria": [
+    {
+      "id": "bmi-threshold",
+      "statement": "The patient's body mass index is at least 35 kg/m2."
+    },
+    {
+      "id": "obesity-related-comorbidity",
+      "statement": "The patient has at least one coexisting condition related to obesity. Type 2 diabetes mellitus qualifies as an obesity-related comorbidity."
+    },
+    {
+      "id": "prior-treatment-unsuccessful",
+      "statement": "Previous medical treatment for the patient's obesity was unsuccessful."
+    }
+  ],
+  "expressions": [
+    {
+      "id": "ncd-criteria",
+      "operator": "all",
+      "operands": [
+        "bmi-threshold",
+        "obesity-related-comorbidity",
+        "prior-treatment-unsuccessful"
+      ]
+    }
+  ]
+}

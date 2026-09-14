@@ -1,0 +1,36 @@
+{
+  "id": "hypothetical-migraine-trial",
+  "metadata": {
+    "version": "draft",
+    "title": "Hypothetical clinical trial matching",
+    "source": "Hypothetical trial of an educational program for adults with migraine. The requirements are invented for this teaching example."
+  },
+  "criteria": [
+    {
+      "id": "adult",
+      "statement": "The patient is at least 18 years old on the assessment date. The assessment date is the date used to evaluate the potential match."
+    },
+    {
+      "id": "migraine-diagnosis",
+      "statement": "The patient has a clinician-confirmed diagnosis of migraine."
+    },
+    {
+      "id": "other-trial-intervention",
+      "statement": "The patient is receiving an intervention as part of another migraine trial on the assessment date. Unknown participation leaves this criterion unresolved."
+    }
+  ],
+  "expressions": [
+    {
+      "id": "no-other-trial-intervention",
+      "operator": "not",
+      "operands": ["other-trial-intervention"]
+    },
+    {
+      "id": "potential-match",
+      "description": "The patient meets the stated criteria for research-team review. The research team confirms eligibility and manages informed consent and enrollment.",
+      "operator": "all",
+      "operands": ["adult", "migraine-diagnosis", "no-other-trial-intervention"]
+    }
+  ],
+  "result": "potential-match"
+}

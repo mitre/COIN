@@ -1,0 +1,14 @@
+pages:
+  image:
+    name: ghcr.io/gohugoio/hugo:v0.166.0
+    entrypoint: [""]
+  stage: deploy
+  tags:
+    - $PAGES_RUNNER_TAG
+  script:
+    - hugo --minify --baseURL "${CI_PAGES_URL}/"
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'

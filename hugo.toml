@@ -1,0 +1,14 @@
+baseURL = 'https://coin.pages.mitre.org/'
+locale = 'en-US'
+title = 'COIN'
+theme = 'coin'
+disableKinds = ['taxonomy', 'term', 'RSS']
+
+[params]
+  notice = 'This is an early proposal for community discussion, with scope and specifications still being developed. To share feedback, ask questions, or get involved, contact [coin@mitre.org](mailto:coin@mitre.org).'
+
+[markup.goldmark.renderHooks.link]
+  useEmbedded = 'always'
+
+[markup.highlight]
+  style = 'github'
