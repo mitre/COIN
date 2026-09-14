@@ -1,0 +1,4 @@
+{{- $toc := .Fragments.ToHTML 2 2 false }}
+{{- $opening := `<nav id="TableOfContents" class="page-toc" aria-labelledby="page-toc-label">
+  <p class="page-toc-label" id="page-toc-label">On this page</p>` }}
+{{- replace $toc `<nav id="TableOfContents">` $opening | safeHTML }}

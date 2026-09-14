@@ -1,0 +1,236 @@
+{
+  "id": "multiple-myeloma",
+  "metadata": {
+    "version": "draft",
+    "title": "Medicare coverage for a patient's stem cell transplant for multiple myeloma",
+    "source": "CMS NCD 110.23, version 2, sections A, B.I.4, B.I.7, B.II.2, C.I, C.II.4-5, and D. Patient and service assessment example using an authoritative determination of study qualification. https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=366&ncdver=2"
+  },
+  "criteria": [
+    {
+      "id": "multiple-myeloma",
+      "statement": "The bone marrow or peripheral blood stem cell transplant being evaluated is for treatment of multiple myeloma in the patient."
+    },
+    {
+      "id": "autologous-transplant",
+      "statement": "The transplant uses the patient's own previously stored stem cells."
+    },
+    {
+      "id": "allogeneic-transplant",
+      "statement": "The transplant uses stem cells obtained from a donor rather than the patient."
+    },
+    {
+      "id": "single-transplant",
+      "statement": "The transplant is a single autologous transplant, rather than a regimen containing multiple rounds of autologous transplantation."
+    },
+    {
+      "id": "tandem-transplant",
+      "statement": "The transplant is part of tandem transplantation, meaning a regimen containing multiple rounds of autologous transplantation for the patient."
+    },
+    {
+      "id": "autologous-conditioning",
+      "statement": "The transplant restores blood-cell formation following severely myelotoxic doses of chemotherapy, radiotherapy, or both used to treat the patient's malignancy."
+    },
+    {
+      "id": "autologous-coverage-effective",
+      "statement": "The transplant's date of service is on or after October 1, 2000."
+    },
+    {
+      "id": "allogeneic-coverage-effective",
+      "statement": "The transplant's date of service is on or after January 27, 2016."
+    },
+    {
+      "id": "historical-allogeneic-noncoverage-period",
+      "statement": "The transplant's date of service is from May 24, 1996, through January 26, 2016, inclusive."
+    },
+    {
+      "id": "durie-salmon-stage",
+      "statement": "The patient's multiple myeloma is Stage II or Stage III under the Durie-Salmon staging system."
+    },
+    {
+      "id": "iss-stage",
+      "statement": "The patient's multiple myeloma is Stage II or Stage III under the International Staging System (ISS)."
+    },
+    {
+      "id": "newly-diagnosed",
+      "statement": "The patient has newly diagnosed multiple myeloma."
+    },
+    {
+      "id": "previously-untreated",
+      "statement": "The patient's multiple myeloma has not previously been treated."
+    },
+    {
+      "id": "paraprotein-response",
+      "statement": "The patient has at least a partial response to a course of chemotherapy for multiple myeloma given before the transplant, demonstrated by a decrease of at least 50% in measurable paraprotein in serum, urine, or both, sustained for at least one month. The decrease and its duration must concern the same response to that course."
+    },
+    {
+      "id": "bone-marrow-response",
+      "statement": "The patient has at least a partial response to a course of chemotherapy for multiple myeloma given before the transplant, demonstrated by a decrease of at least 50% in bone marrow infiltration, sustained for at least one month. The decrease and its duration must concern the same response to that course."
+    },
+    {
+      "id": "responsive-relapse",
+      "statement": "The patient's multiple myeloma is in responsive relapse."
+    },
+    {
+      "id": "cardiac-function",
+      "statement": "The patient has adequate cardiac function for the transplant."
+    },
+    {
+      "id": "renal-function",
+      "statement": "The patient has adequate renal function for the transplant."
+    },
+    {
+      "id": "pulmonary-function",
+      "statement": "The patient has adequate pulmonary function for the transplant."
+    },
+    {
+      "id": "hepatic-function",
+      "statement": "The patient has adequate hepatic function for the transplant."
+    },
+    {
+      "id": "study-participation",
+      "statement": "The patient participates in the clinical study under which the transplant is to be or was provided."
+    },
+    {
+      "id": "study-qualification-confirmed",
+      "statement": "A determination from CMS or the responsible Medicare evaluator confirms that the same study under which the patient's transplant is to be or was provided is a CMS-approved prospective study meeting the applicable study requirements of NCD 110.23 for allogeneic stem cell transplantation for multiple myeloma. The determination applies to the transplant's date of service."
+    },
+    {
+      "id": "other-indication",
+      "statement": "The transplant's indication is not otherwise specified as covered or noncovered in NCD 110.23. Failure to meet requirements for a specified multiple-myeloma indication does not by itself establish that the indication is unspecified."
+    }
+  ],
+  "expressions": [
+    {
+      "id": "partial-response",
+      "description": "A qualifying response to a course of chemotherapy before the transplant.",
+      "operator": "any",
+      "operands": [
+        "paraprotein-response",
+        "bone-marrow-response"
+      ]
+    },
+    {
+      "id": "autologous-disease-status",
+      "description": "Newly diagnosed or responsive multiple myeloma, including previously untreated disease.",
+      "operator": "any",
+      "operands": [
+        "newly-diagnosed",
+        "previously-untreated",
+        "partial-response",
+        "responsive-relapse"
+      ]
+    },
+    {
+      "id": "adequate-organ-function",
+      "operator": "all",
+      "operands": [
+        "cardiac-function",
+        "renal-function",
+        "pulmonary-function",
+        "hepatic-function"
+      ]
+    },
+    {
+      "id": "allogeneic-stage",
+      "description": "Either accepted staging system can establish the stage requirement for allogeneic transplantation.",
+      "operator": "any",
+      "operands": [
+        "durie-salmon-stage",
+        "iss-stage"
+      ]
+    },
+    {
+      "id": "autologous-covered",
+      "description": "The nationally covered single-autologous-transplant pathway for multiple myeloma.",
+      "operator": "all",
+      "operands": [
+        "multiple-myeloma",
+        "autologous-transplant",
+        "single-transplant",
+        "autologous-conditioning",
+        "autologous-coverage-effective",
+        "durie-salmon-stage",
+        "autologous-disease-status",
+        "adequate-organ-function"
+      ]
+    },
+    {
+      "id": "allogeneic-covered",
+      "description": "The nationally covered allogeneic-transplant pathway for multiple myeloma.",
+      "operator": "all",
+      "operands": [
+        "multiple-myeloma",
+        "allogeneic-transplant",
+        "allogeneic-coverage-effective",
+        "allogeneic-stage",
+        "study-participation",
+        "study-qualification-confirmed"
+      ]
+    },
+    {
+      "id": "nationally-covered",
+      "description": "At least one nationally covered multiple-myeloma transplant pathway is satisfied. Coverage of transplantation includes its necessary mobilization, harvesting, conditioning chemotherapy or radiotherapy, and transplantation steps. A finding of not satisfied or unresolved does not by itself establish an explicit national noncoverage indication.",
+      "operator": "any",
+      "operands": [
+        "autologous-covered",
+        "allogeneic-covered"
+      ]
+    },
+    {
+      "id": "before-autologous-coverage",
+      "operator": "not",
+      "operands": [
+        "autologous-coverage-effective"
+      ]
+    },
+    {
+      "id": "historical-autologous-noncoverage",
+      "description": "Autologous transplantation for multiple myeloma before the October 1, 2000 coverage effective date.",
+      "operator": "all",
+      "operands": [
+        "multiple-myeloma",
+        "autologous-transplant",
+        "before-autologous-coverage"
+      ]
+    },
+    {
+      "id": "historical-allogeneic-noncoverage",
+      "description": "Allogeneic transplantation for multiple myeloma during its stated national noncoverage period.",
+      "operator": "all",
+      "operands": [
+        "multiple-myeloma",
+        "allogeneic-transplant",
+        "historical-allogeneic-noncoverage-period"
+      ]
+    },
+    {
+      "id": "tandem-noncoverage",
+      "description": "The explicit national noncoverage indication for tandem autologous transplantation in multiple myeloma.",
+      "operator": "all",
+      "operands": [
+        "multiple-myeloma",
+        "autologous-transplant",
+        "tandem-transplant"
+      ]
+    },
+    {
+      "id": "nationally-noncovered",
+      "description": "At least one explicit national noncoverage indication applicable to multiple myeloma is satisfied. When transplantation is noncovered, none of its component steps are covered. This expression is assessed independently from the covered pathways.",
+      "operator": "any",
+      "operands": [
+        "historical-autologous-noncoverage",
+        "historical-allogeneic-noncoverage",
+        "tandem-noncoverage"
+      ]
+    },
+    {
+      "id": "local-determination",
+      "description": "An indication not specified as covered or noncovered requires a local Medicare Administrative Contractor determination under section 1862(a)(1)(A). This expression does not infer an unspecified indication by negating the covered and noncovered expressions.",
+      "operator": "all",
+      "operands": [
+        "multiple-myeloma",
+        "other-indication"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "profile": {
+    "id": "https://example.org/coin/profiles/example-enrollment",
+    "version": "1"
+  },
+  "context": {
+    "patientId": "patient-17",
+    "episodeId": "episode-4",
+    "program": "example-support",
+    "reviewDate": "2026-08-08"
+  },
+  "items": [
+    {
+      "id": "urn:example:clinic:form:12",
+      "format": "application/json",
+      "content": {
+        "status": "signed",
+        "signedOn": "2026-08-06"
+      },
+      "source": "https://mitre.github.io/COIN/walkthrough/profile/preparer-record.json#/activities/2/exchange/response/result/structuredContent/sources/0/records/0"
+    },
+    {
+      "id": "urn:example:clinic:note:34",
+      "format": "text/plain",
+      "content": "The patient completed the program's orientation in a live video session with a program instructor for this enrollment episode. The session finished on August 7, 2026.",
+      "source": "https://mitre.github.io/COIN/walkthrough/profile/preparer-record.json#/activities/2/exchange/response/result/structuredContent/sources/1/records/0"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+<nav class="sidebar" aria-label="Documentation">
+  <a class="sidebar-title" href="{{ site.Home.RelPermalink }}">{{ site.Title }}</a>
+  {{- $pages := slice site.Home }}
+  {{- range site.Home.Pages.ByWeight }}
+    {{- $pages = $pages | append . }}
+  {{- end }}
+  {{- $categories := slice }}
+  {{- range $pages }}
+    {{- with .Params.category }}
+      {{- $categories = $categories | append . }}
+    {{- end }}
+  {{- end }}
+  {{- range $categories | uniq }}
+    {{- $id := printf "sidebar-%s" (anchorize .) }}
+    {{- $categoryPages := where $pages "Params.category" . }}
+    <div class="sidebar-group" role="group" aria-labelledby="{{ $id }}">
+      <p class="sidebar-label" id="{{ $id }}">{{ . }}</p>
+      {{- $subcategories := slice }}
+      {{- range $categoryPages }}
+        {{- $subcategories = $subcategories | append (.Params.subcategory | default "") }}
+      {{- end }}
+      {{- range $subcategories | uniq }}
+        {{- $subcategory := . }}
+        {{- if $subcategory }}
+          {{- $subcategoryID := printf "%s-%s" $id (anchorize $subcategory) }}
+          <div class="sidebar-subgroup" role="group" aria-labelledby="{{ $subcategoryID }}">
+            <p class="sidebar-sublabel" id="{{ $subcategoryID }}">{{ $subcategory }}</p>
+        {{- end }}
+        <ul>
+          {{- range $categoryPages }}
+            {{- if eq (.Params.subcategory | default "") $subcategory }}
+              <li>
+                <a href="{{ .RelPermalink }}"{{ if eq . $ }} aria-current="page"{{ end }}>{{ .LinkTitle }}</a>
+              </li>
+            {{- end }}
+          {{- end }}
+        </ul>
+        {{- if $subcategory }}
+          </div>
+        {{- end }}
+      {{- end }}
+    </div>
+  {{- end }}
+</nav>

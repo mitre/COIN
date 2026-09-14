@@ -1,0 +1,325 @@
+{
+  "profile": {
+    "id": "https://example.org/coin/profiles/example-enrollment",
+    "version": "1"
+  },
+  "participant": {
+    "id": "https://example.org/clinic/preparer",
+    "name": "Clinic Preparer"
+  },
+  "context": {
+    "patientId": "patient-17",
+    "episodeId": "episode-4",
+    "program": "example-support",
+    "reviewDate": "2026-08-08"
+  },
+  "activities": [
+    {
+      "at": "2026-08-08T14:00:00Z",
+      "actor": "https://example.org/clinic/coordinator",
+      "action": "Assign enrollment preparation",
+      "outcome": "Assigned the patient, enrollment episode, program, review date, and Profile version.",
+      "inputs": [
+        "#/context",
+        "https://mitre.github.io/COIN/walkthrough/profile/profile.json"
+      ],
+      "outputs": []
+    },
+    {
+      "at": "2026-08-08T14:01:00Z",
+      "actor": "https://example.org/clinic/preparer",
+      "action": "Request requirements",
+      "outcome": "HTTP 200, matched. Retained the requirements response and its Criteria set for this task.",
+      "exchange": {
+        "protocol": "http",
+        "request": {
+          "method": "POST",
+          "path": "/coin/v0/requirements",
+          "body": {
+            "profile": {
+              "id": "https://example.org/coin/profiles/example-enrollment",
+              "version": "1"
+            },
+            "context": {
+              "program": "example-support",
+              "reviewDate": "2026-08-08"
+            }
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": {
+            "outcome": "matched",
+            "response": {
+              "id": "example-response-1",
+              "issuedAt": "2026-08-08T14:01:00Z",
+              "evaluator": {
+                "id": "https://example.org/program/evaluator",
+                "name": "Program Evaluator"
+              },
+              "evaluatingParty": {
+                "id": "https://example.org/program",
+                "name": "Support program"
+              },
+              "scope": "Participation-form and orientation requirements for the support program and requested August 2026 review date. The program review team makes the subsequent enrollment decision.",
+              "requirements": {
+                "content": {
+                  "id": "example-enrollment",
+                  "metadata": {
+                    "version": "1",
+                    "title": "Support program enrollment requirements",
+                    "source": "Fictional support program enrollment policy, version 1, requirements and established interpretations. https://example.org/program/policies/enrollment/1"
+                  },
+                  "criteria": [
+                    {
+                      "id": "participation-form",
+                      "statement": "The provider's enrollment file contains a signed participation form for the selected program, patient, and enrollment episode, dated on or before the review date. A complete search of that file with no qualifying form establishes that this documentation requirement is not satisfied."
+                    },
+                    {
+                      "id": "live-orientation",
+                      "statement": "The patient completed live orientation for the selected program and this enrollment episode on or before the review date. Absence of a record does not establish that orientation did not occur; the finding remains unresolved when the available evidence cannot establish completion."
+                    },
+                    {
+                      "id": "prior-orientation",
+                      "statement": "The selected program accepted the patient's prior orientation with that program for this enrollment episode on or before the review date. Absence of a record does not establish that acceptance did not occur; the finding remains unresolved when the available evidence cannot establish acceptance."
+                    }
+                  ],
+                  "expressions": [
+                    {
+                      "id": "orientation-requirement",
+                      "operator": "any",
+                      "operands": [
+                        "live-orientation",
+                        "prior-orientation"
+                      ]
+                    },
+                    {
+                      "id": "enrollment-requirements",
+                      "operator": "all",
+                      "operands": [
+                        "participation-form",
+                        "orientation-requirement"
+                      ]
+                    }
+                  ],
+                  "result": "enrollment-requirements"
+                }
+              }
+            }
+          }
+        }
+      },
+      "inputs": [],
+      "outputs": []
+    },
+    {
+      "at": "2026-08-08T14:02:00Z",
+      "actor": "https://example.org/clinic/preparer",
+      "action": "Call enrollment-data.get_enrollment_records",
+      "outcome": "Both sources reported complete retrieval. Found one signed form and one orientation note. No recorded acceptance of prior orientation was found.",
+      "exchange": {
+        "protocol": "mcp",
+        "request": {
+          "jsonrpc": "2.0",
+          "id": 1,
+          "method": "tools/call",
+          "params": {
+            "name": "get_enrollment_records",
+            "arguments": {
+              "patientId": "patient-17",
+              "episodeId": "episode-4",
+              "program": "example-support",
+              "reviewDate": "2026-08-08"
+            }
+          }
+        },
+        "response": {
+          "jsonrpc": "2.0",
+          "id": 1,
+          "result": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"patientId\":\"patient-17\",\"episodeId\":\"episode-4\",\"program\":\"example-support\",\"reviewDate\":\"2026-08-08\",\"sources\":[{\"name\":\"forms\",\"status\":\"complete\",\"detail\":\"The complete forms source for patient-17, episode-4, program example-support, through 2026-08-08 UTC was searched. One record was found and returned.\",\"records\":[{\"id\":\"urn:example:clinic:form:12\",\"format\":\"application/json\",\"content\":{\"status\":\"signed\",\"signedOn\":\"2026-08-06\"}}]},{\"name\":\"orientation\",\"status\":\"complete\",\"detail\":\"The complete orientation source for patient-17, episode-4, program example-support, through 2026-08-08 UTC was searched. One note and no recorded acceptance of prior orientation were found.\",\"records\":[{\"id\":\"urn:example:clinic:note:34\",\"format\":\"text/plain\",\"content\":\"The patient completed the program's orientation in a live video session with a program instructor for this enrollment episode. The session finished on August 7, 2026.\"}]}]}"
+              }
+            ],
+            "structuredContent": {
+              "patientId": "patient-17",
+              "episodeId": "episode-4",
+              "program": "example-support",
+              "reviewDate": "2026-08-08",
+              "sources": [
+                {
+                  "name": "forms",
+                  "status": "complete",
+                  "detail": "The complete forms source for patient-17, episode-4, program example-support, through 2026-08-08 UTC was searched. One record was found and returned.",
+                  "records": [
+                    {
+                      "id": "urn:example:clinic:form:12",
+                      "format": "application/json",
+                      "content": {
+                        "status": "signed",
+                        "signedOn": "2026-08-06"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "name": "orientation",
+                  "status": "complete",
+                  "detail": "The complete orientation source for patient-17, episode-4, program example-support, through 2026-08-08 UTC was searched. One note and no recorded acceptance of prior orientation were found.",
+                  "records": [
+                    {
+                      "id": "urn:example:clinic:note:34",
+                      "format": "text/plain",
+                      "content": "The patient completed the program's orientation in a live video session with a program instructor for this enrollment episode. The session finished on August 7, 2026."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      },
+      "inputs": [],
+      "outputs": []
+    },
+    {
+      "at": "2026-08-08T14:03:00Z",
+      "actor": "https://example.org/clinic/preparer",
+      "action": "Clarify live-orientation",
+      "outcome": "HTTP 200, clarified. The explanation confirms that a real-time video session can qualify.",
+      "exchange": {
+        "protocol": "http",
+        "request": {
+          "method": "POST",
+          "path": "/coin/v0/requirements/example-response-1/clarify",
+          "body": {
+            "targetId": "live-orientation",
+            "question": "Does live orientation include a real-time video session with a program instructor?"
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": {
+            "outcome": "clarified",
+            "explanation": "Live orientation includes a real-time session with a program instructor, either in person or by video. A prerecorded session alone does not qualify."
+          }
+        }
+      },
+      "inputs": [],
+      "outputs": []
+    },
+    {
+      "at": "2026-08-08T14:04:00Z",
+      "actor": "https://example.org/clinic/preparer",
+      "action": "Assess assigned criteria and expressions",
+      "outcome": "All five assigned targets were assessed. The overall finding is satisfied; prior-orientation remains unresolved.",
+      "inputs": [
+        "#/activities/1/exchange/response/body",
+        "#/activities/3/exchange/response/body",
+        "#/activities/2/exchange/response/result/structuredContent"
+      ],
+      "outputs": [
+        "#/assessments/0/findings"
+      ]
+    },
+    {
+      "at": "2026-08-08T14:05:00Z",
+      "actor": "https://example.org/clinic/preparer",
+      "action": "Prepare evidence payload",
+      "outcome": "Derived the evidence payload by copying the signed form and orientation note used in the findings from the retained MCP response, preserving their source references.",
+      "inputs": [
+        "#/activities/2/exchange/response/result/structuredContent",
+        "#/assessments/0/findings"
+      ],
+      "outputs": [
+        "https://mitre.github.io/COIN/walkthrough/profile/evidence.json"
+      ]
+    },
+    {
+      "at": "2026-08-08T14:06:00Z",
+      "actor": "https://example.org/clinic/coordinator",
+      "action": "Review preparation",
+      "outcome": "Checked subject, episode, program, dates, source support, the clarification, and the unresolved prior-orientation finding. Approved handoff to the program's review team.",
+      "inputs": [
+        "https://mitre.github.io/COIN/walkthrough/profile/evidence.json",
+        "#/assessments/0"
+      ],
+      "outputs": []
+    },
+    {
+      "at": "2026-08-08T14:07:00Z",
+      "actor": "https://example.org/clinic/coordinator",
+      "action": "Hand off evidence",
+      "outcome": "Delivered the reviewed evidence payload, Preparer Activity Record, and referenced content to the program's review team using the configured delivery method.",
+      "inputs": [
+        "https://mitre.github.io/COIN/walkthrough/profile/evidence.json",
+        "https://mitre.github.io/COIN/walkthrough/profile/preparer-record.json",
+        "https://mitre.github.io/COIN/walkthrough/profile/profile.json"
+      ],
+      "outputs": [
+        "https://mitre.github.io/COIN/walkthrough/profile/evidence.json",
+        "https://mitre.github.io/COIN/walkthrough/profile/preparer-record.json",
+        "https://mitre.github.io/COIN/walkthrough/profile/profile.json"
+      ]
+    }
+  ],
+  "assessments": [
+    {
+      "requirements": "#/activities/1/exchange/response/body",
+      "targets": [
+        "participation-form",
+        "live-orientation",
+        "prior-orientation",
+        "orientation-requirement",
+        "enrollment-requirements"
+      ],
+      "findings": [
+        {
+          "targetId": "participation-form",
+          "state": "satisfied",
+          "explanation": "The enrollment file contains a signed participation form for this patient and episode, dated August 6, before the review date.",
+          "basis": [
+            "#/activities/2/exchange/response/result/structuredContent/sources/0/records/0"
+          ]
+        },
+        {
+          "targetId": "live-orientation",
+          "state": "satisfied",
+          "explanation": "The note records a completed live video orientation for this enrollment episode. The program's clarification confirms that real-time video qualifies.",
+          "basis": [
+            "#/activities/2/exchange/response/result/structuredContent/sources/1/records/0",
+            "#/activities/3/exchange/response/body"
+          ]
+        },
+        {
+          "targetId": "prior-orientation",
+          "state": "unresolved",
+          "explanation": "The completed retrieval found no record establishing the program's acceptance of prior orientation for this episode. The source rules do not treat that absence as proof that acceptance did not occur.",
+          "basis": [
+            "#/activities/2/exchange/response/result/structuredContent/sources/1"
+          ]
+        },
+        {
+          "targetId": "orientation-requirement",
+          "state": "satisfied",
+          "explanation": "The live-orientation finding satisfies the any expression. The prior-orientation finding remains unresolved.",
+          "basis": [
+            "#/assessments/0/findings/1",
+            "#/assessments/0/findings/2"
+          ]
+        },
+        {
+          "targetId": "enrollment-requirements",
+          "state": "satisfied",
+          "explanation": "The participation-form and orientation-requirement findings satisfy the all expression. This is the overall Criteria finding selected by result.",
+          "basis": [
+            "#/assessments/0/findings/0",
+            "#/assessments/0/findings/3"
+          ]
+        }
+      ]
+    }
+  ]
+}
